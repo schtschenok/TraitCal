@@ -3,3 +3,6 @@ input
 output
 .venv
 .idea
+*.egg-info
+build
+__pycache__
