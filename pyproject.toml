@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "TraitCal"
+version = "0.1.0"
+description = "A calendar tool with traits"
+readme = "README.md"
+requires-python = ">=3.13"
+license = { text = "MIT" }
+dependencies = [
+    "pytz",
+    "icalendar",
+    "fastapi",
+    "uvicorn"
+]
+authors = [
+    { name = "Tyoma Makeev", email = "tyomamakeev@gmail.com" }
+]
+
+[project.urls]
+"Homepage" = "https://github.com/schtschenok/traitcal"
+"Bug Tracker" = "https://github.com/schtschenok/traitcal/issues"
+
+[tool.setuptools]
+packages = ["traitcal"]
+
+[project.scripts]
+traitcal = "traitcal.main:main"
