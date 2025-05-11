@@ -1,0 +1,19 @@
+// Create data/calendar.json (without comments)
+[
+    {
+        "date": "2025-05-06",
+        "traits": [
+            {
+                "name": "Trait Name",
+                // Optional overrides
+                "main_event": {
+                    "start_time": "10:00:00",
+                    "duration": "02:00:00",
+                    "end_time": "12:00:00",
+                    "busy": true,
+                    "description": "Overridden main event description."
+                }
+            }
+        ]
+    }
+]

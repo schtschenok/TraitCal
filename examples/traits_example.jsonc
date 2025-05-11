@@ -1,0 +1,49 @@
+// Create data/traits.json (without comments)
+[
+    {
+        // Required
+        "name": "Trait Name",
+        // Required
+        "main_event": {
+            // Required
+            "name": "Main Event Name",
+            // Required
+            "start_time": "10:00:00",
+            // Required if end_time is not present
+            "duration": "02:00:00",
+            // Required if duration is not present
+            "end_time": "12:00:00",
+            // Optional, defaults to false
+            "busy": true,
+            // Optional
+            "description": "Main event description."
+        },
+        // Optional
+        "events": [
+            {
+                // Required
+                "name": "Optional Event Name",
+                // Optional, shift from main event day
+                "day_delta": "-1",
+                // Required if start_time_delta or start_time_delta_from_end are not present
+                "start_time": "11:00:00",
+                // Required if start_time or start_time_delta_from_end are not present
+                "start_time_delta": "01:00:00",
+                // Required if start_time or start_time_delta are not present
+                "start_time_delta_from_end": "-01:00:00",
+                // Required if end_time_delta or end_time_delta_from_start or duration are not present
+                "end_time": "13:00:00",
+                // Required if end_time or end_time_delta_from_start or duration are not present
+                "end_time_delta": "01:00:00",
+                // Required if end_time or end_time_delta or duration are not present
+                "end_time_delta_from_start": "03:00:00",
+                // Required if end_time or end_time_delta or end_time_delta_from_start are not present
+                "duration": "02:00:00",
+                // Optional, defaults to false
+                "busy": false,
+                // Optional
+                "description": "Optional event description."
+            }
+        ]
+    }
+]
