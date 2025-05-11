@@ -67,8 +67,8 @@ END:VTIMEZONE
     calendar_main.add("x-wr-timezone", "Asia/Tbilisi")
     calendar_events.add_component(tz)
     calendar_events.add("x-wr-timezone", "Asia/Tbilisi")
-    
-    tz_offset = datetime.timezone(datetime.timedelta(hours=4))
+
+    tz_offset = datetime.timezone(datetime.timedelta(hours=4), "Asia/Tbilisi")
 
     with open("input/calendar.json") as f:
         calendar_data = json.load(f)
