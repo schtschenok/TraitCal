@@ -254,9 +254,9 @@ END:VTIMEZONE
     with open("output/other.ics", "wb") as f:
         f.write(ical_events)
 
-    print(ical_main.decode("utf-8"))
+    # print(ical_main.decode("utf-8"))
 
-    print(ical_events.decode("utf-8"))
+    # print(ical_events.decode("utf-8"))
 
     finish_time = time.time()
 
