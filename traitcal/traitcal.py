@@ -107,7 +107,7 @@ END:VTIMEZONE
                 trait_main_event_start_time = datetime.datetime.combine(
                     day_date,
                     datetime.time.fromisoformat(trait_main_event_start_time_str)
-                )
+                ).astimezone(datetime.timezone.utc)
 
             trait_main_event_duration = None
             if trait_main_event_duration_str:
@@ -118,7 +118,7 @@ END:VTIMEZONE
                 trait_main_event_end_time = datetime.datetime.combine(
                     day_date,
                     datetime.time.fromisoformat(trait_main_event_end_time_str)
-                )
+                ).astimezone(datetime.timezone.utc)
 
             trait_main_event_description = trait_main_event_description_str
 
@@ -140,8 +140,8 @@ END:VTIMEZONE
             if trait_main_event_end_time < trait_main_event_start_time:
                 trait_main_event_end_time += datetime.timedelta(days=1)
 
-            trait_main_event_start_time = trait_main_event_start_time.astimezone(tz_offset)
-            trait_main_event_end_time = trait_main_event_end_time.astimezone(tz_offset)
+            trait_main_event_start_time = trait_main_event_start_time.replace(tzinfo=tz_offset)
+            trait_main_event_end_time = trait_main_event_end_time.replace(tzinfo=tz_offset)
 
             print(
                 f"Main event name: {trait_main_event_name}\n"
@@ -155,7 +155,7 @@ END:VTIMEZONE
             main_event_component = icalendar.Event()  # noqa
             main_event_component.add("uid", uuid.uuid4())
             main_event_component.add("summary", trait_main_event_name)
-            main_event_component.add("dtstamp", datetime.datetime.now().astimezone(tz_offset))
+            main_event_component.add("dtstamp", datetime.datetime.now().replace(tzinfo=tz_offset))
             main_event_component.add("dtstart", trait_main_event_start_time)
             main_event_component.add("dtend", trait_main_event_end_time)
             if trait_main_event_description:
@@ -194,7 +194,7 @@ END:VTIMEZONE
                     event_start_time = datetime.datetime.combine(
                         event_start_day,
                         datetime.time.fromisoformat(event_start_time_str)
-                    ).astimezone(tz_offset)
+                    ).astimezone(datetime.timezone.utc)
                 elif event_start_time_delta_str:
                     if trait_main_event_start_time:
                         event_start_time = trait_main_event_start_time + get_timedelta_from_iso_time(event_start_time_delta_str) + datetime.timedelta(days=int(event_day_delta_int))
@@ -205,13 +205,13 @@ END:VTIMEZONE
                 if not event_start_time:
                     raise ValueError(f"Could not determine start time for event '{event_name}'")
 
-                event_start_time = event_start_time.astimezone(tz_offset)
+                event_start_time = event_start_time.replace(tzinfo=tz_offset)
 
                 if event_end_time_str:
                     event_end_time = datetime.datetime.combine(
                         event_start_day,
                         datetime.time.fromisoformat(event_end_time_str)
-                    )
+                    ).astimezone(datetime.timezone.utc)
                 elif event_end_time_delta_str:
                     if trait_main_event_start_time:
                         event_end_time = trait_main_event_end_time + get_timedelta_from_iso_time(event_end_time_delta_str) + datetime.timedelta(days=int(event_day_delta_int))
@@ -223,7 +223,7 @@ END:VTIMEZONE
                 if not event_end_time:
                     event_end_time = event_start_time + DEFAULT_EVENT_DURATION
 
-                event_end_time = event_end_time.astimezone(tz_offset)
+                event_end_time = event_end_time.replace(tzinfo=tz_offset)
 
                 if event_end_time < event_start_time:
                     event_end_time += datetime.timedelta(days=1)
@@ -237,7 +237,7 @@ END:VTIMEZONE
                 event_component = icalendar.Event()  # noqa
                 event_component.add("uid", uuid.uuid4())
                 event_component.add("summary", event_name)
-                event_component.add("dtstamp", datetime.datetime.now().astimezone(tz_offset))
+                event_component.add("dtstamp", datetime.datetime.now().replace(tzinfo=tz_offset))
                 event_component.add("dtstart", event_start_time)
                 event_component.add("dtend", event_end_time)
                 if event_description_str:
