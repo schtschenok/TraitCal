@@ -64,8 +64,10 @@ END:VTIMEZONE
 """)
 
     calendar_main.add_component(tz)
+    calendar_main.add("x-wr-timezone", "Asia/Tbilisi")
     calendar_events.add_component(tz)
-
+    calendar_events.add("x-wr-timezone", "Asia/Tbilisi")
+    
     tz_offset = datetime.timezone(datetime.timedelta(hours=4))
 
     with open("input/calendar.json") as f:
@@ -161,7 +163,6 @@ END:VTIMEZONE
             main_event_component.add("transp", "OPAQUE" if trait_main_event_busy_bool else "TRANSPARENT")
 
             calendar_main.add_component(main_event_component)
-            calendar_main.add("x-wr-timezone", "Asia/Tbilisi")
 
             if "events" not in traits_dict[trait_name]:
                 continue
@@ -244,7 +245,6 @@ END:VTIMEZONE
                 event_component.add("transp", "OPAQUE" if event_busy_bool else "TRANSPARENT")
 
                 calendar_events.add_component(event_component)
-                calendar_events.add("x-wr-timezone", "Asia/Tbilisi")
 
     data_processed_time = time.time()
 
