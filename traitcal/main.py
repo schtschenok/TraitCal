@@ -6,12 +6,11 @@ from pathlib import Path
 from typing import Any
 
 import icalendar
-from fastapi import FastAPI
+
+from fastapi import FastAPI, Depends, HTTPException, Query
 from fastapi.responses import FileResponse
 
 DEFAULT_EVENT_DURATION = datetime.timedelta(minutes=20)
-
-app = FastAPI()
 
 
 def get_from_multiple_dicts(dict_list, key: str) -> Any:
@@ -272,8 +271,22 @@ if __name__ == '__main__':
     main()
 
 
+def verify_api_key(api_key: str = Query(None, alias="api_key")):
+    if api_key != API_KEY:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid API key",
+            headers={"WWW-Authenticate": "ApiKey"},
+        )
+    return api_key
+
+
+API_KEY = "some_key"
+app = FastAPI()
+
+
 @app.get("/main.ics", response_class=FileResponse)
-def get_calendar_main():
+def get_calendar_main(api_key: str = Depends(verify_api_key)):
     return FileResponse(
         path=Path("output/main.ics"),
         media_type="text/calendar; charset=utf-8",
@@ -282,7 +295,7 @@ def get_calendar_main():
 
 
 @app.get("/other.ics", response_class=FileResponse)
-def get_calendar_other():
+def get_calendar_other(api_key: str = Depends(verify_api_key)):
     return FileResponse(
         path=Path("output/other.ics"),
         media_type="text/calendar; charset=utf-8",
@@ -291,7 +304,7 @@ def get_calendar_other():
 
 
 @app.post("/update_traits")
-def update_traits(data: list[dict[str, Any]]):
+def update_traits(data: list[dict[str, Any]], api_key: str = Depends(verify_api_key)):
     with open("input/traits.json", "w") as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
     main()
@@ -303,7 +316,7 @@ def update_traits(data: list[dict[str, Any]]):
 
 
 @app.post("/update_calendar")
-def update_calendar(data: list[dict[str, Any]]):
+def update_calendar(data: list[dict[str, Any]], api_key: str = Depends(verify_api_key)):
     with open("input/calendar.json", "w") as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
     try:
